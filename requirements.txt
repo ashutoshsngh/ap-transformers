@@ -1,6 +1,9 @@
+# Do NOT add torch here: it comes from the base image (2.7.1 + CUDA 12.8).
+# transformers MUST stay on 4.x: v5 breaks AyurParam's custom code (KeyError: 'type').
 runpod
-torch
-transformers
-accelerate
+transformers==4.46.3
+accelerate==1.1.1
+huggingface_hub>=0.26,<1.0
 safetensors
 sentencepiece
+protobuf
