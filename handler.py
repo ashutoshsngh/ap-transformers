@@ -107,7 +107,7 @@ def openai_handler(route, body):
     return openai_error(f"unsupported route {route}")
 
 
-def handler(job):
+def _handle(job):
     inp = job["input"]
 
     # OpenAI-compatible route: /v2/<id>/openai/v1/...
@@ -130,4 +130,10 @@ def handler(job):
     return {"output": text, "tokens": n_out}
 
 
-runpod.serverless.start({"handler": handler})
+def handler(job):
+    # Generator handler: RunPod's /openai/v1 gateway reads results from the stream
+    # channel, so a plain `return` comes back as a 502 on those routes.
+    yield _handle(job)
+
+
+runpod.serverless.start({"handler": handler, "return_aggregate_stream": True})
