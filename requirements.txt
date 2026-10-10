@@ -1,0 +1,5 @@
+runpod
+transformers
+accelerate
+safetensors
+sentencepiece
